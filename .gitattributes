@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+*.typ text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.bib text eol=lf
+*.md text eol=lf
+
+*.pdf binary

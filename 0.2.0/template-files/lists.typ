@@ -7,15 +7,6 @@
 
   set page(numbering: "I")
 
-  // Abstract
-  if abstract-content != none {
-    pagebreak(weak: true)
-    abstract-content
-  }
-
-  // Table of Contents
-  set heading(numbering: "1.1")
-
   // Headings level 1
   show heading.where(
     level: 1,
@@ -58,6 +49,16 @@
     #it
     #v(0.8em)
   ]
+
+  // Abstract
+  if abstract-content != none {
+    pagebreak(weak: true)
+    abstract-content
+    pagebreak()
+  }
+
+  // Table of Contents
+  set heading(numbering: "1.1")
 
   // Indent all lists
   set list(indent: 1.5em)
