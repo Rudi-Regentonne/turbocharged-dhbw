@@ -1,6 +1,13 @@
 #import "i18n.typ": strings
 
-#let lists(body, abstract-content: none, bibliography-content: none, acronyms: (), lang: "de") = {
+#let lists(
+  body,
+  abstract-content: none,
+  bibliography-content: none,
+  appendix-content: none,
+  acronyms: (),
+  lang: "de",
+) = {
   import "@preview/acrostiche:0.7.0": *
 
   let translations = strings(lang)
@@ -169,5 +176,12 @@
     show bibliography: set bibliography(title: none)
 
     bibliography-content
+  }
+
+  // Appendix
+  if appendix-content != none {
+    pagebreak()
+    heading(level: 1, numbering: none, outlined: true)[#translations.appendix-title]
+    appendix-content
   }
 }

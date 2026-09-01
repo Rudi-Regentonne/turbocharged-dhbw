@@ -34,6 +34,7 @@
     list-of-listings: [Quellcodeverzeichnis],
     list-of-equations: [Formelverzeichnis],
     bibliography-title: [Literaturverzeichnis],
+    appendix-title: [Anhang],
     listing-supplement: [Quellcode],
   )
   let en = (
@@ -71,6 +72,7 @@
     list-of-listings: [List of Listings],
     list-of-equations: [List of Equations],
     bibliography-title: [Bibliography],
+    appendix-title: [Appendix],
     listing-supplement: [Listing],
   )
   if lang == "en" { en } else { de }

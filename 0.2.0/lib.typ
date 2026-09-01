@@ -27,6 +27,7 @@
   declaration-text: none,
   declaration-title: none,
   bibliography-content: none,
+  appendix-content: none,
   cover-page: none,
   lang: "de",
   body,
@@ -135,6 +136,7 @@
     body,
     abstract-content: abstract-content,
     bibliography-content: bibliography-content,
+    appendix-content: appendix-content,
     acronyms: acronyms,
     lang: lang,
   )
