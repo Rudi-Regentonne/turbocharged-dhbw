@@ -42,6 +42,7 @@ Die Vorlage wird über die Funktion `report` in der `main.typ` konfiguriert. Hie
 - `bibliography-content`: Die Literaturquelle, eingebunden über die `bibliography()`-Funktion (Optional).
 - `cover-page`: Überschreibt das Deckblatt mit eigenem Content Am besten via `include "filename.typ"` (Optional).
 - `lang`: Sprache des Dokuments, `"de"` (Standard) oder `"en"` (Optional).
+- `appendix-content`: Der Inhalt des Anhangs. Am besten via `include "content/appendix.typ"` (Optional).
 
 == Beispiel für den Aufruf
 Ein typischer Aufruf in der `main.typ` sieht wie folgt aus:
@@ -237,6 +238,7 @@ The template is configured via the `report` function in `main.typ`. Here is an o
 - `bibliography-content`: The bibliography source, included via the `bibliography()` function (optional).
 - `cover-page`: Overrides the title page with custom content, best included via `include "filename.typ"` (optional).
 - `lang`: Document language, `"de"` (default) or `"en"` (optional).
+- `appendix-content`: The content of the appendix. Best included via `include "content/appendix.typ"` (optional).
 
 == Example Call
 A typical call in `main.typ` looks like this:
