@@ -22,6 +22,7 @@
   document-type: "Praxisbericht",
   acronyms: yaml("abk.yml"),
   bibliography-content: bibliography("bericht.bib"),
+  appendix-content: include "content/anhang.typ",
 )
 
 // Main content
@@ -34,14 +35,3 @@
 #pagebreak()
 = Schluss
 #include "content/schluss.typ"
-
-// Appendix
-
-#pagebreak()
-
-
-
-
-= Anhang
-
-#include "content/anhang.typ"

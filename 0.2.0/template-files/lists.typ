@@ -1,6 +1,13 @@
 #import "i18n.typ": strings
 
-#let lists(body, abstract-content: none, bibliography-content: none, acronyms: (), lang: "de") = {
+#let lists(
+  body,
+  abstract-content: none,
+  bibliography-content: none,
+  appendix-content: none,
+  acronyms: (),
+  lang: "de",
+) = {
   import "@preview/acrostiche:0.7.0": *
 
   let translations = strings(lang)
@@ -169,5 +176,31 @@
     show bibliography: set bibliography(title: none)
 
     bibliography-content
+  }
+
+  // Appendix
+  if appendix-content != none {
+    pagebreak()
+    
+    set heading(numbering: (..nums) => {
+      let levels = nums.pos()
+      
+      if levels.len() == 1 {
+        // Level 1 (=): Numbers like 1., 2., 3.
+        numbering("1.", levels.at(0)) 
+      } else if levels.len() == 2 {
+        // Level 2 (==): Just letters like A, B, C (without the parent number)
+        numbering("A", levels.at(1)) 
+      } else {
+        // Level 3 (===) and deeper: e.g., A.1, A.2
+        let l2 = levels.at(1)
+        let rest = levels.slice(2)
+        numbering("A.1", l2, ..rest)
+      }
+    })
+
+    counter(heading).update(1) 
+    heading(level: 1, numbering: none, outlined: true)[#translations.appendix-title]
+    appendix-content
   }
 }
