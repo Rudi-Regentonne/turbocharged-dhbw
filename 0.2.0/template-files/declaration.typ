@@ -6,11 +6,14 @@
   confidential: bool,
   confidential-text: none,
   show-declaration: bool,
+  show-ai-declaration: false,
   declaration-text: none,
   declaration-title: none,
   lang: "de",
 ) = {
   let translations = strings(lang)
+  // String or array. Place and date are shared.
+  let authors = if type(author) == array { author } else { (author,) }
   if show-declaration or confidential {
     pagebreak()
   }
@@ -39,21 +42,28 @@
         declaration-text
       }
 
+      #if show-ai-declaration {
+        parbreak()
+        translations.declaration-ai
+      }
+
       #v(3cm)
 
-
-      #table(
-        columns: (1fr, 1fr, 1.4fr),
-        align: (center, center, center),
-        inset: (x: 0pt, y: 4pt),
-        stroke: (x: none, y: none),
-        [#company-city], [#today], [#translations.signed #author],
-        [#line(length: 100%, stroke: 0.8pt + luma(40))],
-        [#line(length: 100%, stroke: 0.8pt + luma(40))],
-        [#line(length: 100%, stroke: 0.8pt + luma(40))],
-
-        [#translations.place], [#translations.date], [#translations.signature],
-      )
+      // `inset` supplies the gap the old table had. Do not also set
+      // `row-gutter`: the two add up and the block overflows sooner.
+      #for (i, a) in authors.enumerate() {
+        if i > 0 { v(0.6cm) }
+        grid(
+          columns: (1fr, 1fr, 1.4fr),
+          align: (center, center, center),
+          inset: (x: 0pt, y: 4pt),
+          [#company-city], [#today], [#translations.signed #a],
+          [#line(length: 100%, stroke: 0.8pt + luma(40))],
+          [#line(length: 100%, stroke: 0.8pt + luma(40))],
+          [#line(length: 100%, stroke: 0.8pt + luma(40))],
+          [#translations.place], [#translations.date], [#translations.signature],
+        )
+      }
     ]
 
 

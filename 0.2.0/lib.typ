@@ -2,6 +2,7 @@
 #import "template-files/header.typ": running-header
 #import "template-files/titlepage.typ": titlepage
 #import "template-files/lists.typ": lists
+#import "template-files/ai-tools.typ": ai-tools-table, ai-acknowledgement
 #let report(
   author: [author],
   module: none,
@@ -24,10 +25,13 @@
   university-logo: none,
   university: none,
   show-declaration: true,
+  // `auto` appends the AI sentence when `ai-tools` is set. `false` turns it off.
+  show-ai-declaration: auto,
   declaration-text: none,
   declaration-title: none,
   bibliography-content: none,
   appendix-content: none,
+  ai-tools: none,
   cover-page: none,
   lang: "de",
   body,
@@ -91,6 +95,13 @@
   // Declaration
   import "template-files/declaration.typ": declaration
 
+  let ai-tools-given = ai-tools != none and ai-tools.len() > 0
+  let include-ai-declaration = if show-ai-declaration == auto {
+    ai-tools-given
+  } else {
+    show-ai-declaration
+  }
+
   declaration(
     author: author,
     company-city: city,
@@ -99,6 +110,7 @@
     declaration-text: declaration-text,
     declaration-title: declaration-title,
     show-declaration: show-declaration,
+    show-ai-declaration: include-ai-declaration,
     lang: lang,
   )
 
@@ -137,6 +149,7 @@
     abstract-content: abstract-content,
     bibliography-content: bibliography-content,
     appendix-content: appendix-content,
+    ai-tools: ai-tools,
     acronyms: acronyms,
     lang: lang,
   )

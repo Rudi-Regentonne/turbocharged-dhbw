@@ -7,9 +7,9 @@
 Die Vorlage wird über die Funktion `report` in der `main.typ` konfiguriert. Hier ist eine Übersicht aller Parameter, die an die Funktion übergeben werden können:
 
 == Persönliche und formale Daten
-- `author`: Der vollständige Name des Verfassers (Content).
-- `student-id`: Die Matrikelnummer zur eindeutigen Identifikation (String/Content).
-- `course`: Die Kursbezeichnung (z. B. "TINF22B1").
+- `author`: Name des Verfassers (Content), oder ein Array von Namen. Auf dem Deckblatt als kommagetrennte Liste. In der Ehrenwörtlichen Erklärung bekommt jeder eine eigene Zeile mit Ort, Datum und Unterschrift; Ort und Datum sind für alle gleich.
+- `student-id`: Matrikelnummer (String/Content), oder ein Array. Jede Nummer bekommt eine eigene Zeile in der Tabelle auf dem Deckblatt.
+- `course`: Die Kursbezeichnung (z. B. "TINF22B1"), oder ein Array. Jeder Kurs bekommt eine eigene Zeile in der Tabelle auf dem Deckblatt.
 - `program`: Der Name des Studiengangs (z. B. "Informatik").
 - `city`: Standort des Betriebs.
   - Wird genutzt für den Betriebsstandort und gegebenenfalls in der Erklärung sonst Optional
@@ -35,6 +35,7 @@ Die Vorlage wird über die Funktion `report` in der `main.typ` konfiguriert. Hie
 - `confidential`: Soll ein Sperrvermerk eingefügt werden (Optional).
 - `confidential-text`: Eigener Text für den Sperrvermerk (Optional).
 - `show-declaration`: Soll eine Erklärung eingefügt werden (Optional).
+- `show-ai-declaration`: Hängt an die Erklärung den Satz, dass KI-Werkzeuge eingesetzt und an den entsprechenden Stellen kenntlich gemacht wurden. `auto` (Standard) macht das, sobald `ai-tools` gesetzt ist. `false` schaltet den Satz ab, `true` erzwingt ihn.
 - `declaration-title`: Eigener Titel für die Erklärung (Optional).
 - `declaration-text`: Eigener Text für die Erklärung (Optional).
 - `abstract-content`: Der Inhalt des Abstracts. Am besten via `include "content/abstract.typ"` einbinden (Optional).
@@ -43,19 +44,21 @@ Die Vorlage wird über die Funktion `report` in der `main.typ` konfiguriert. Hie
 - `cover-page`: Überschreibt das Deckblatt mit eigenem Content Am besten via `include "filename.typ"` (Optional).
 - `lang`: Sprache des Dokuments, `"de"` (Standard) oder `"en"` (Optional).
 - `appendix-content`: Der Inhalt des Anhangs. Am besten via `include "content/appendix.typ"` (Optional).
+- `ai-tools`: Ein Dictionary oder eine YAML-Datei (`yaml("ai.yml")`) mit verwendeten KI-Werkzeugen. Wird automatisch als Tabelle im Anhang ausgegeben (Optional).
 
 == Beispiel für den Aufruf
 Ein typischer Aufruf in der `main.typ` sieht wie folgt aus:
 
 #code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Beispielaufruf", highlight: (3, 10))[```typst
 #show: report.with(
-author: "Rudi Regentonne",
+author: ("Rudi Regentonne", "John Doe"),
 title: "Analyse des Kaffeeverbrauchs im Homeoffice",
 program: "Angewandte Informatik",
 company-logo: image("assets/firma-logo.png"),
 confidential: true,
 abstract-content: include "content/abstract.typ",
 acronyms: yaml("abk.yml"),
+ai-tools: yaml("ai.yml"),
 )
 ```]
 
@@ -74,6 +77,28 @@ acronyms: yaml("abk.yml"),
 - ```typst #reset-all-acronyms()```: Setzt alle Abkürzungen zurück.
 - ```typst #acused(key)```: Markiert Abkürzung als "verwendet", ohne Text zu drucken.
 
+== KI-Werkzeuge
+
+Laut DHBW-Leitlinie ist der Einsatz von KI-Werkzeugen transparent zu dokumentieren. Dafür reicht eine YAML-Datei analog zu den Abkürzungen — ohne Typst-Tabellen-Syntax.
+
+#code(caption: "Beispiel ai.yml")[```yaml
+ChatGPT:
+  - Verständnis von Grundbegriffen (Kapitel 3.4)
+  - Recherche und Identifikation von Literaturstellen (Kapitel 4)
+ChatPDF: Recherche und Zusammenfassung von wissenschaftlichen Studien (Kapitel 4 und 6.2)
+Microsoft Copilot:
+  - Korrektur- und Formulierungshilfe (gesamt)
+  - Übersetzung von Textpassagen zwischen Deutsch und Englisch (gesamt)
+```]
+
+Der Wert pro Werkzeug ist ein String oder eine Liste. In `main.typ` einbinden mit ```typst ai-tools: yaml("ai.yml")```. Die Tabelle erscheint automatisch im Anhang unter „Anmerkung zur Nutzung von Künstlicher Intelligenz“.
+
+Für eine eigene Stelle im Fließtext oder Anhang:
+
+- ```typst #ai-tools-table(yaml("ai.yml"))```: Rendert nur die Tabelle. Import via ```typst #import "@local/turbocharged-dhbw:0.2.0": ai-tools-table```.
+
+Parameter `ai-tools` und Helper nicht parallel nutzen, sonst erscheint die Tabelle doppelt.
+
 == Zitieren
 Geht mit ```typst @bibname``` oder mit ```typst #cite(<bibname>)```@
 
@@ -87,7 +112,7 @@ Beispiel: #small-todo[Quelle für diese Aussage ergänzen]
 Inline kann mit einfachen Backticks eingebunden werden ``` `Inlinecode` ```.
 #box[
 
-  Für Codeblöcke kann entweder ````typst ```Sprache code``` ```` oder 
+  Für Codeblöcke kann entweder ````typst ```Sprache code``` ```` oder
   #code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Beispielaufruf")[````typst
     #import "@local/turbocharged-dhbw:0.2.0": code
     #code(
@@ -203,9 +228,9 @@ Bilder werden so eingefügt:
 The template is configured via the `report` function in `main.typ`. Here is an overview of all parameters that can be passed to the function:
 
 == Personal and Formal Data
-- `author`: The full name of the author (content).
-- `student-id`: The student ID for unique identification (string/content).
-- `course`: The course designation (e.g. "TINF22B1").
+- `author`: The author's name (content), or an array of names. Shown on the title page as a comma-separated list. Each author gets a place, date, and signature line on the declaration; place and date are shared.
+- `student-id`: Student ID (string/content), or an array. Each ID gets its own row in the title-page table.
+- `course`: The course designation (e.g. "TINF22B1"), or an array. Each course gets its own row in the title-page table.
 - `program`: The name of the degree program (e.g. "Computer Science").
 - `city`: Location of the company.
   - Used for the company location and, where applicable, in the declaration; otherwise optional.
@@ -231,6 +256,7 @@ The template is configured via the `report` function in `main.typ`. Here is an o
 - `confidential`: Whether a confidentiality notice should be inserted (optional).
 - `confidential-text`: Custom text for the confidentiality notice (optional).
 - `show-declaration`: Whether a declaration of authorship should be inserted (optional).
+- `show-ai-declaration`: Appends the sentence that AI tools were used and marked at the corresponding places. `auto` (default) does this when `ai-tools` is set. `false` turns the sentence off, `true` forces it.
 - `declaration-title`: Custom title for the declaration (optional).
 - `declaration-text`: Custom text for the declaration (optional).
 - `abstract-content`: The content of the abstract. Best included via `include "content/abstract.typ"` (optional).
@@ -239,6 +265,7 @@ The template is configured via the `report` function in `main.typ`. Here is an o
 - `cover-page`: Overrides the title page with custom content, best included via `include "filename.typ"` (optional).
 - `lang`: Document language, `"de"` (default) or `"en"` (optional).
 - `appendix-content`: The content of the appendix. Best included via `include "content/appendix.typ"` (optional).
+- `ai-tools`: A dictionary or a YAML file (`yaml("ai.yml")`) listing used AI tools. Automatically rendered as a table in the appendix (optional).
 
 == Example Call
 A typical call in `main.typ` looks like this:
@@ -246,13 +273,14 @@ A typical call in `main.typ` looks like this:
 #code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Example call", highlight: (3, 10))[```typst
 #show: report.with(
 lang: "en",
-author: "Rudi Regentonne",
+author: ("Rudi Regentonne", "John Doe"),
 title: "Coffee Consumption Analysis in the Home Office",
 program: "Applied Computer Science",
 company-logo: image("assets/company-logo.png"),
 confidential: true,
 abstract-content: include "content/abstract.typ",
 acronyms: yaml("abk.yml"),
+ai-tools: yaml("ai.yml"),
 )
 ```]
 
@@ -271,6 +299,28 @@ acronyms: yaml("abk.yml"),
 - ```typst #reset-all-acronyms()```: Resets all acronyms.
 - ```typst #acused(key)```: Marks the acronym as "used" without printing any text.
 
+== AI Tools
+
+DHBW guidelines require transparent documentation of AI tool use. A YAML file analogous to the acronyms is enough — no Typst table syntax.
+
+#code(caption: "Example ai.yml")[```yaml
+ChatGPT:
+  - Understanding of basic concepts (Chapter 3.4)
+  - Literature search and identification of sources (Chapter 4)
+ChatPDF: Research and summary of scientific studies (Chapters 4 and 6.2)
+Microsoft Copilot:
+  - Proofreading and wording assistance (entire document)
+  - Translation of passages between German and English (entire document)
+```]
+
+The value per tool is a string or a list. Include it in `main.typ` with ```typst ai-tools: yaml("ai.yml")```. The table appears automatically in the appendix under “AI Acknowledgement”.
+
+For a custom location in the body or appendix:
+
+- ```typst #ai-tools-table(yaml("ai.yml"))```: Renders only the table. Import via ```typst #import "@local/turbocharged-dhbw:0.2.0": ai-tools-table```.
+
+Do not use the `ai-tools` parameter and the helper in parallel, or the table will appear twice.
+
 == Citing
 Works with ```typst @bibname``` or with ```typst #cite(<bibname>)```.
 
@@ -284,7 +334,7 @@ Example: #small-todo[Add a source for this claim]
 Inline code can be included with simple backticks ``` `inline code` ```.
 #box[
 
-  For code blocks, either ````typst ```language code``` ```` or 
+  For code blocks, either ````typst ```language code``` ```` or
   #code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Example call")[````typst
     #import "@local/turbocharged-dhbw:0.2.0": code
     #code(
@@ -392,5 +442,3 @@ Images are inserted like this:
   ),
   caption: [DHBW operating states],
 )
-
-

@@ -84,5 +84,3 @@ Passed to `report.with(...)`. Only `title`, `program`, and `document-type` need 
 Also exported: `code` for numbered listings, `small-todo` (a smaller `dashy-todo`), `ai-tools-table`, and `ai-acknowledgement`.
 
 Do not pass `ai-tools` and also call `ai-tools-table` yourself, or the table appears twice.
-
-Docs: <https://typst.app/docs/>
