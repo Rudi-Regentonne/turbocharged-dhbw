@@ -1,4 +1,5 @@
 #import "i18n.typ": strings
+#import "header.typ": running-header
 
 #let lists(
   body,
@@ -13,7 +14,8 @@
 
   let translations = strings(lang)
 
-  set page(numbering: "I")
+  set page(numbering: "I", header: running-header())
+  counter(page).update(1)
 
   // Headings level 1
   show heading.where(
@@ -149,16 +151,16 @@
     }
   }
 
+  // Text starts at 1. Bibliography and appendix keep Arabic numbering.
   pagebreak(weak: true)
   set page(numbering: "1")
+  counter(page).update(1)
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
     it
   }
 
   body
-
-  set page(numbering: "I")
 
   // Bibliography
   show bibliography: set bibliography(title: heading(
@@ -168,7 +170,6 @@
   )[#translations.bibliography-title])
   if bibliography-content != none {
     pagebreak()
-    set page(numbering: "I")
     set bibliography(style: "ieee")
     heading(level: 1, numbering: none, outlined: true)[#translations.bibliography-title]
 
@@ -186,16 +187,16 @@
     if has-ai-tools {
       ai-acknowledgement(ai-tools, lang: lang)
     }
-    
+
     set heading(numbering: (..nums) => {
       let levels = nums.pos()
-      
+
       if levels.len() == 1 {
         // Level 1 (=): Numbers like 1., 2., 3.
-        numbering("1.", levels.at(0)) 
+        numbering("1.", levels.at(0))
       } else if levels.len() == 2 {
         // Level 2 (==): Letters like A., B., C. (period separates letter from title)
-        numbering("A.", levels.at(1)) 
+        numbering("A.", levels.at(1))
       } else {
         // Level 3 (===) and deeper: e.g., A.1, A.2
         let l2 = levels.at(1)
@@ -204,7 +205,7 @@
       }
     })
 
-    counter(heading).update(1) 
+    counter(heading).update(1)
     heading(level: 1, numbering: none, outlined: true)[#translations.appendix-title]
     if appendix-content != none {
       appendix-content

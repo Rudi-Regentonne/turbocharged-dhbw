@@ -81,6 +81,6 @@ author: ("Jane Doe", "John Smith"),
 | `cover-page` | `none` | Ersetzt das generierte Deckblatt. |
 | `lang` | `"de"` | `"de"` oder `"en"`. |
 
-Außerdem exportiert: `code` für nummerierte Listings, `small-todo` (ein kleineres `dashy-todo`), `ai-tools-table` und `ai-acknowledgement`.
+Außerdem exportiert: `code` für nummerierte Listings, `small-todo` (ein kleineres `dashy-todo`), `ai-tools-table`, `ai-acknowledgement` und `source`. `#source[...]` ohne Leerzeichen davor. Steht in derselben Zeile und fehlt im Abbildungsverzeichnis. Eigene Arbeit: `#source[eigene Darstellung]` wird zu `(eigene Darstellung)`. Eine Zitation `#source[@key]` bleibt die Zitation, nicht `([1])`. Abgewandelt: `#source[in Anlehnung an @key]`.
 
 `ai-tools` und `ai-tools-table` nicht gleichzeitig nutzen, sonst erscheint die Tabelle doppelt.

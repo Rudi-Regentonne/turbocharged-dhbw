@@ -1,8 +1,8 @@
 #import "template-files/listings-lib.typ": code
-#import "template-files/header.typ": running-header
 #import "template-files/titlepage.typ": titlepage
 #import "template-files/lists.typ": lists
 #import "template-files/ai-tools.typ": ai-tools-table, ai-acknowledgement
+#import "template-files/source.typ": source, in-outline
 #let report(
   author: [author],
   module: none,
@@ -45,7 +45,7 @@
   set page(
     paper: "a4",
     margin: (x: 3cm, top: 2.5cm, bottom: 2.5cm),
-    header: running-header(),
+    header: none,
   )
   set text(
     font: "New Computer Modern",
@@ -70,6 +70,12 @@
 
   set math.equation(numbering: "(1)")
   set figure(numbering: "1")
+
+  show outline: it => {
+    in-outline.update(true)
+    it
+    in-outline.update(false)
+  }
 
   titlepage(
     title: title,

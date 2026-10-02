@@ -1,5 +1,5 @@
 #import "@preview/acrostiche:0.7.0": *
-#import "@local/turbocharged-dhbw:0.2.0": code, small-todo
+#import "@local/turbocharged-dhbw:0.2.0": code, small-todo, source
 
 
 = Konfiguration der Vorlage (Main-Funktion)
@@ -168,21 +168,25 @@ Das Ergebnis:
 
 == Abbildungen
 
-Bilder werden so eingefügt:
+Bilder werden so eingefügt. `#source` hängt die Quelle in derselben Zeile an. Sie fehlt im Abbildungsverzeichnis. Kein Leerzeichen vor `#source`. Eine bloße Zitation wird nicht nochmal eingeklammert.
 #code(caption: "Bild einfügen")[```typst
 #figure(
   image("../assets/dhbw-logo.png", width: 40%),
-  caption: [
-    Hilfe was sehe ich hier
-  ],
+  caption: [Hilfe was sehe ich hier#source[eigene Darstellung]],
+)
+#figure(
+  image("../assets/dhbw-logo.png", width: 40%),
+  caption: [Systemaufbau#source[@RedHatAPI]],
+)
+#figure(
+  image("../assets/dhbw-logo.png", width: 40%),
+  caption: [Abgewandeltes Schema#source[in Anlehnung an @RedHatAPI]],
 )
 ```]
 
 #figure(
   image("../assets/dhbw-logo.png", width: 40%),
-  caption: [
-    Hilfe was sehe ich hier
-  ],
+  caption: [Hilfe was sehe ich hier#source[eigene Darstellung]],
 )
 #box[
 
@@ -390,21 +394,25 @@ The result:
 
 == Figures
 
-Images are inserted like this:
+Images are inserted like this. `#source` stays on the caption line and is left out of the list of figures. No space before `#source`. A bare citation is not wrapped in a second pair of parentheses.
 #code(caption: "Inserting an image")[```typst
 #figure(
   image("../assets/dhbw-logo.png", width: 40%),
-  caption: [
-    Help, what am I looking at
-  ],
+  caption: [Help, what am I looking at#source[own illustration]],
+)
+#figure(
+  image("../assets/dhbw-logo.png", width: 40%),
+  caption: [System layout#source[@RedHatAPI]],
+)
+#figure(
+  image("../assets/dhbw-logo.png", width: 40%),
+  caption: [Adapted diagram#source[adapted from @RedHatAPI]],
 )
 ```]
 
 #figure(
   image("../assets/dhbw-logo.png", width: 40%),
-  caption: [
-    Help, what am I looking at
-  ],
+  caption: [Help, what am I looking at#source[own illustration]],
 )
 #box[
 

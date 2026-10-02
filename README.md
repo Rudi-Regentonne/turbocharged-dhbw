@@ -81,8 +81,6 @@ Passed to `report.with(...)`. Only `title`, `program`, and `document-type` need 
 | `cover-page` | `none` | Replaces the generated title page. |
 | `lang` | `"de"` | `"de"` or `"en"`. |
 
-Also exported: `code` for numbered listings, `small-todo` (a smaller `dashy-todo`), `ai-tools-table`, and `ai-acknowledgement`.
+Also exported: `code` for numbered listings, `small-todo` (a smaller `dashy-todo`), `ai-tools-table`, `ai-acknowledgement`, and `source`. Write `#source[...]` with no space before it. It stays on the caption line and is omitted from the list of figures. Own work: `#source[eigene Darstellung]` prints `(eigene Darstellung)`. A citation: `#source[@key]` prints the citation as-is, not `([1])`. Adapted figures: `#source[in Anlehnung an @key]`.
 
 Do not pass `ai-tools` and also call `ai-tools-table` yourself, or the table appears twice.
-
-Docs: <https://typst.app/docs/>

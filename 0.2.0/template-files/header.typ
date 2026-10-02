@@ -14,7 +14,7 @@
   import "@preview/hydra:0.6.2": hydra
 
   let headings = query(selector(heading).after(here()))
-  if (counter(page).get().first() > 2 and headings.len() > 0) {
+  if headings.len() > 0 {
     if headings.first().level >= 2 or headings.first().location().page() != here().page() {
       grid(
         columns: (auto, 1fr),
