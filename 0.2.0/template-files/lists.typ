@@ -1,10 +1,12 @@
 #import "i18n.typ": strings
+#import "header.typ": running-header
 
 #let lists(
   body,
   abstract-content: none,
   bibliography-content: none,
   appendix-content: none,
+  ai-tools: none,
   acronyms: (),
   lang: "de",
 ) = {
@@ -12,7 +14,8 @@
 
   let translations = strings(lang)
 
-  set page(numbering: "I")
+  set page(numbering: "I", header: running-header())
+  counter(page).update(1)
 
   // Headings level 1
   show heading.where(
@@ -106,16 +109,6 @@
       )
     }
 
-    // List of acronyms
-    if (acronyms != none and acronyms.len() > 0) {
-      pagebreak()
-      print-index(
-        row-gutter: 1em,
-        title: heading(level: 1, numbering: none, outlined: true)[#translations.list-of-acronyms],
-        delimiter: "",
-        clickable: true,
-      )
-    }
 
     // List of tables
     let tables = query(figure.where(kind: table))
@@ -137,6 +130,16 @@
       )
     }
 
+    // List of acronyms
+    if (acronyms != none and acronyms.len() > 0) {
+      pagebreak()
+      print-index(
+        row-gutter: 1em,
+        title: heading(level: 1, numbering: none, outlined: true)[#translations.list-of-acronyms],
+        delimiter: "",
+        clickable: true,
+      )
+    }
     // List of formulas
     let eqs = query(math.equation.where(block: true))
     if eqs.len() > 0 {
@@ -148,18 +151,16 @@
     }
   }
 
-  // ADDED: A weak pagebreak to ensure the main body starts on a new page
+  // Text starts at 1. Bibliography and appendix keep Arabic numbering.
   pagebreak(weak: true)
   set page(numbering: "1")
-  // First-level headings always start on a new page
+  counter(page).update(1)
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
     it
   }
 
   body
-
-  set page(numbering: "I")
 
   // Bibliography
   show bibliography: set bibliography(title: heading(
@@ -169,7 +170,6 @@
   )[#translations.bibliography-title])
   if bibliography-content != none {
     pagebreak()
-    set page(numbering: "I")
     set bibliography(style: "ieee")
     heading(level: 1, numbering: none, outlined: true)[#translations.bibliography-title]
 
@@ -179,18 +179,24 @@
   }
 
   // Appendix
-  if appendix-content != none {
+  let has-ai-tools = ai-tools != none and ai-tools.len() > 0
+  if appendix-content != none or has-ai-tools {
+    import "ai-tools.typ": ai-acknowledgement
+
     pagebreak()
-    
+    if has-ai-tools {
+      ai-acknowledgement(ai-tools, lang: lang)
+    }
+
     set heading(numbering: (..nums) => {
       let levels = nums.pos()
-      
+
       if levels.len() == 1 {
         // Level 1 (=): Numbers like 1., 2., 3.
-        numbering("1.", levels.at(0)) 
+        numbering("1.", levels.at(0))
       } else if levels.len() == 2 {
-        // Level 2 (==): Just letters like A, B, C (without the parent number)
-        numbering("A", levels.at(1)) 
+        // Level 2 (==): Letters like A., B., C. (period separates letter from title)
+        numbering("A.", levels.at(1))
       } else {
         // Level 3 (===) and deeper: e.g., A.1, A.2
         let l2 = levels.at(1)
@@ -199,8 +205,10 @@
       }
     })
 
-    counter(heading).update(1) 
+    counter(heading).update(1)
     heading(level: 1, numbering: none, outlined: true)[#translations.appendix-title]
-    appendix-content
+    if appendix-content != none {
+      appendix-content
+    }
   }
 }

@@ -19,6 +19,7 @@
       anderen Prüfung mit gleichem oder vergleichbarem Inhalt vorgelegt habe und diese bislang
       nicht veröffentlicht wurde. Des Weiteren versichere ich, dass die eingereichte elektronische
       Fassung mit der gedruckten Ausfertigung übereinstimmt.],
+    declaration-ai: [Ich habe bei der Erstellung der Arbeit KI-Werkzeuge eingesetzt. Dies habe ich an den entsprechenden Stellen der Arbeit kenntlich gemacht.],
     signed: "gez.",
     place: "Ort",
     date: "Datum",
@@ -35,6 +36,10 @@
     list-of-equations: [Formelverzeichnis],
     bibliography-title: [Literaturverzeichnis],
     appendix-title: [Anhang],
+    ai-acknowledgement-title: [Anmerkung zur Nutzung von Künstlicher Intelligenz],
+    ai-tools-table-caption: [Übersicht über die verwendeten KI-basierten Werkzeuge],
+    ai-tools-col-tool: [Werkzeug],
+    ai-tools-col-usage: [Beschreibung der Nutzung],
     listing-supplement: [Quellcode],
   )
   let en = (
@@ -57,6 +62,7 @@
       submitted, in the same or comparable form, for any other examination, and has not previously
       been published. I also confirm that the submitted electronic version is identical to the
       printed copy.],
+    declaration-ai: [I used AI tools in the preparation of this work. I have indicated this at the corresponding places in the work.],
     signed: "signed",
     place: "Place",
     date: "Date",
@@ -73,6 +79,10 @@
     list-of-equations: [List of Equations],
     bibliography-title: [Bibliography],
     appendix-title: [Appendix],
+    ai-acknowledgement-title: [AI Acknowledgement],
+    ai-tools-table-caption: [Overview of the AI-based tools used],
+    ai-tools-col-tool: [Tool],
+    ai-tools-col-usage: [Description of use],
     listing-supplement: [Listing],
   )
   if lang == "en" { en } else { de }
