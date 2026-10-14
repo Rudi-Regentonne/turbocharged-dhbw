@@ -1,8 +1,8 @@
 #import "template-files/listings-lib.typ": code
 #import "template-files/titlepage.typ": titlepage
 #import "template-files/lists.typ": lists
-#import "template-files/ai-tools.typ": ai-tools-table, ai-acknowledgement
-#import "template-files/source.typ": source, in-outline
+#import "template-files/ai-tools.typ": ai-acknowledgement, ai-tools-table
+#import "template-files/source.typ": in-outline, source
 #let report(
   author: [author],
   module: none,
@@ -38,8 +38,10 @@
 ) = {
   import "@preview/acrostiche:0.7.0": *
 
-  if acronyms.len() > 0 {
-    init-acronyms(acronyms)
+  if acronyms != none {
+    if acronyms.len() > 0 {
+      init-acronyms(acronyms)
+    }
   }
 
   set page(
